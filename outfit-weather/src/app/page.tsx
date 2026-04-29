@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -5,9 +8,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+import { logout } from "./login/actions";
+
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   return (
     <main className="flex flex-1 items-center justify-center p-8">
       <Card className="w-full max-w-xl">
@@ -19,10 +33,17 @@ export default function Home() {
         </CardHeader>
         <CardContent className="flex flex-col gap-4 text-sm text-muted-foreground">
           <p>
-            Day 1-2 セットアップ完了。Day 3 以降で認証・天気API・AI提案を実装していきます。
+            ログイン中:{" "}
+            <span className="text-foreground font-medium">{user.email}</span>
           </p>
-          <div>
+          <p>Day 3-4 認証実装完了。Day 5-7 で天気APIを実装していきます。</p>
+          <div className="flex flex-wrap gap-3">
             <Button disabled>コーデを提案してもらう（Day 8-10 で実装）</Button>
+            <form action={logout}>
+              <Button type="submit" variant="outline">
+                ログアウト
+              </Button>
+            </form>
           </div>
         </CardContent>
       </Card>
