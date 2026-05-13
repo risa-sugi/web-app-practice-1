@@ -30,25 +30,33 @@ export default function LoginPage() {
           <CardTitle>{mode === "login" ? "ログイン" : "新規登録"}</CardTitle>
           <CardDescription>
             {mode === "login"
-              ? "メールアドレスとパスワードでログインしてください"
-              : "メールアドレスとパスワードでアカウントを作成します"}
+              ? "ユーザーIDとパスワードでログインしてください"
+              : "ユーザーIDとパスワードでアカウントを作成します"}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form action={formAction} className="flex flex-col gap-4">
             <input type="hidden" name="mode" value={mode} />
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium">
-                メールアドレス
+              <label htmlFor="username" className="text-sm font-medium">
+                ユーザーID
               </label>
               <Input
-                id="email"
-                name="email"
-                type="email"
+                id="username"
+                name="username"
+                type="text"
                 required
-                autoComplete="email"
-                placeholder="you@example.com"
+                minLength={3}
+                maxLength={32}
+                pattern="[a-z0-9_\-]{3,32}"
+                autoComplete="username"
+                placeholder="your_id"
               />
+              {mode === "signup" && (
+                <p className="text-xs text-muted-foreground">
+                  半角英小文字・数字・ハイフン・アンダースコア 3〜32文字
+                </p>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="password" className="text-sm font-medium">
