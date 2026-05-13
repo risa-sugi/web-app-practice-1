@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/card";
 import type { WeatherSnapshot } from "@/types/weather";
 
+import type { ResolvedLocation } from "./home-content";
+
 type WeatherCardProps = {
   defaultRegion: string;
+  onResolved?: (location: ResolvedLocation) => void;
 };
 
 type FetchState =
@@ -21,7 +24,7 @@ type FetchState =
   | { status: "success"; data: WeatherSnapshot }
   | { status: "error"; message: string };
 
-export function WeatherCard({ defaultRegion }: WeatherCardProps) {
+export function WeatherCard({ defaultRegion, onResolved }: WeatherCardProps) {
   const [state, setState] = useState<FetchState>({ status: "loading" });
 
   useEffect(() => {
@@ -30,6 +33,11 @@ export function WeatherCard({ defaultRegion }: WeatherCardProps) {
     async function load() {
       try {
         const coords = await tryGeolocation();
+        if (coords) {
+          onResolved?.({ kind: "coords", lat: coords.lat, lon: coords.lon });
+        } else {
+          onResolved?.({ kind: "region", region: defaultRegion });
+        }
         const url = coords
           ? `/api/weather?lat=${coords.lat}&lon=${coords.lon}`
           : `/api/weather?region=${encodeURIComponent(defaultRegion)}`;
@@ -54,7 +62,7 @@ export function WeatherCard({ defaultRegion }: WeatherCardProps) {
 
     void load();
     return () => controller.abort();
-  }, [defaultRegion]);
+  }, [defaultRegion, onResolved]);
 
   return (
     <Card className="w-full max-w-xl">

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { WeatherCard } from "@/components/weather-card";
+import { HomeContent } from "@/components/home-content";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -44,7 +44,7 @@ export default async function Home() {
         <CardHeader>
           <CardTitle>outfit-weather</CardTitle>
           <CardDescription>
-            天気とシーンに合ったコーディネートを AI が提案するアプリ（開発中）
+            天気とシーンに合ったコーディネートを AI が提案するアプリ
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4 text-sm text-muted-foreground">
@@ -52,17 +52,14 @@ export default async function Home() {
             ログイン中:{" "}
             <span className="text-foreground font-medium">{username}</span>
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Button disabled>コーデを提案してもらう（Day 8-10 で実装）</Button>
-            <form action={logout}>
-              <Button type="submit" variant="outline">
-                ログアウト
-              </Button>
-            </form>
-          </div>
+          <form action={logout}>
+            <Button type="submit" variant="outline">
+              ログアウト
+            </Button>
+          </form>
         </CardContent>
       </Card>
-      <WeatherCard defaultRegion={region} />
+      <HomeContent defaultRegion={region} />
     </main>
   );
 }
