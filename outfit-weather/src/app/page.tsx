@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { WeatherCard } from "@/components/weather-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,9 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DEFAULT_REGION } from "@/lib/weather/regions";
 import { createClient } from "@/lib/supabase/server";
 
 import { logout } from "./login/actions";
+
+function extractUsername(email: string | null | undefined) {
+  if (!email) return "";
+  const at = email.indexOf("@");
+  return at >= 0 ? email.slice(0, at) : email;
+}
 
 export default async function Home() {
   const supabase = await createClient();
@@ -22,8 +30,16 @@ export default async function Home() {
     redirect("/login");
   }
 
+  const { data: settings } = await supabase
+    .from("user_settings")
+    .select("region")
+    .maybeSingle();
+
+  const region = settings?.region ?? DEFAULT_REGION;
+  const username = extractUsername(user.email);
+
   return (
-    <main className="flex flex-1 items-center justify-center p-8">
+    <main className="flex flex-1 flex-col items-center gap-6 p-8">
       <Card className="w-full max-w-xl">
         <CardHeader>
           <CardTitle>outfit-weather</CardTitle>
@@ -34,9 +50,8 @@ export default async function Home() {
         <CardContent className="flex flex-col gap-4 text-sm text-muted-foreground">
           <p>
             ログイン中:{" "}
-            <span className="text-foreground font-medium">{user.email}</span>
+            <span className="text-foreground font-medium">{username}</span>
           </p>
-          <p>Day 3-4 認証実装完了。Day 5-7 で天気APIを実装していきます。</p>
           <div className="flex flex-wrap gap-3">
             <Button disabled>コーデを提案してもらう（Day 8-10 で実装）</Button>
             <form action={logout}>
@@ -47,6 +62,7 @@ export default async function Home() {
           </div>
         </CardContent>
       </Card>
+      <WeatherCard defaultRegion={region} />
     </main>
   );
 }
