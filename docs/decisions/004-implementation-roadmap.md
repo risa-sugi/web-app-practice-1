@@ -17,8 +17,7 @@
   - 認証ガード（未ログイン時のリダイレクト）
   - user_settings テーブル作成 + RLS設定
 - [ ] Day 5-7: 天気API連携
-  - OpenWeatherMap API キー取得・設定
-  - Next.js Route Handler で天気データ取得API作成
+  - Open-Meteo Forecast API を Route Handler 経由で呼ぶ（登録・キー不要）
   - ホーム画面の天気カードUI実装
   - 位置情報取得 or 地域手動選択の実装
 

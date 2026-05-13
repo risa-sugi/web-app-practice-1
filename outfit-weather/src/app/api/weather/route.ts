@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { fetchWeather } from "@/lib/weather/openweather";
+import { fetchWeather } from "@/lib/weather/openmeteo";
 import { DEFAULT_REGION, resolveRegion } from "@/lib/weather/regions";
 
 export async function GET(request: Request) {
