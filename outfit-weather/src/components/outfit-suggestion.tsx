@@ -121,6 +121,10 @@ export function OutfitSuggestion({
 function OutfitSkeleton() {
   return (
     <div className="flex flex-col gap-3">
+      <p className="text-sm text-muted-foreground">
+        <span className="inline-block animate-pulse">AI が考えています</span>
+        <span className="ml-1 inline-block animate-pulse">...</span>
+      </p>
       <div className="h-6 w-1/2 animate-pulse rounded-md bg-muted" />
       <div className="h-20 w-full animate-pulse rounded-md bg-muted" />
       <div className="h-20 w-full animate-pulse rounded-md bg-muted" />

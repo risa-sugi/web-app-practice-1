@@ -38,6 +38,7 @@ export async function generateOutfit(
         responseMimeType: "application/json",
         responseSchema: OUTFIT_RESPONSE_SCHEMA,
         temperature: 0.9,
+        thinkingConfig: { thinkingBudget: 0 },
       },
     }),
     cache: "no-store",
