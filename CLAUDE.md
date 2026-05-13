@@ -15,7 +15,7 @@
 - Supabase（Auth + PostgreSQL）: `@supabase/ssr` 経由
 - Tailwind CSS v4 + shadcn/ui（New York / neutral）
 - Google Gemini 2.5 Flash（Day 8-10 で導入）
-- OpenWeatherMap One Call API 3.0（Day 5-7 で導入）
+- Open-Meteo Forecast API（Day 5-7 で導入、API キー不要）
 - Unsplash API（Day 11-13 で導入）
 - Vercel でホスティング（Day 22-23 で導入）
 
@@ -29,7 +29,7 @@
 ## コーディング規約
 - 関数コンポーネント + hooks。クラスコンポーネントは使わない
 - API キーは環境変数から取得。実キーは `.env.local`（git 管理外）に、テンプレは `.env.local.example` に
-- 外部API（OpenWeatherMap / Gemini / Unsplash）の呼び出しは必ず Route Handler 経由。クライアントに API キーを露出させない
+- 外部API（Open-Meteo / Gemini / Unsplash）の呼び出しは必ず Route Handler 経由。クライアントに API キーを露出させない（Open-Meteo は無キーだが、レスポンス整形と Geolocation 取得後の URL 構築も含めてサーバー側に寄せる）
 - Supabase Auth のセッションは `@supabase/ssr` の `createServerClient` / `createBrowserClient` を介して読む（`src/lib/supabase/` 参照）
 - エラーハンドリングを省略しない。ただし MVP 段階では過剰な抽象化は避ける
 

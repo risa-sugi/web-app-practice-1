@@ -18,7 +18,7 @@
 | Database | Supabase PostgreSQL | 500MB / 2プロジェクト |
 | 認証 | Supabase Auth | 月5万MAU |
 | UIライブラリ | shadcn/ui + Tailwind CSS | OSS |
-| 天気API | OpenWeatherMap One Call API 3.0 | 1,000コール/日 |
+| 天気API | Open-Meteo Forecast API | 10,000コール/日（登録不要） |
 | AI API | Google Gemini 2.5 Flash | 250リクエスト/日、10RPM |
 | 画像API | Unsplash API | 50リクエスト/時間 |
 | デプロイ | Vercel | 月100GB帯域 |
@@ -27,11 +27,15 @@
 
 ## 各APIの選定理由
 
-### 天気：OpenWeatherMap One Call API 3.0
-- 1回のAPIコールで現在天気 + 48時間予報 + 8日間予報が取得可能
-- 無料枠が1,000コール/日と十分
-- 日本語対応あり
-- 注意：サブスクリプション登録時にクレジットカードが必要（1,000コール/日以内なら課金なし。上限設定で安全）
+### 天気：Open-Meteo Forecast API
+- 登録不要・API キー不要で叩ける
+- 非商用利用なら 10,000 コール/日まで無料
+- 1回の呼び出しで現在天気・日別予報を取得可能
+- レスポンスは WMO 天気コード（0-99）。日本語のテキスト表現とアイコンはコード側でマッピング
+
+#### 不採用にした案: OpenWeatherMap One Call API 3.0
+- 無料枠 1,000 コール/日と十分だが、サブスクライブにクレジットカード登録が必要
+- 個人開発の MVP でカード登録の心理的コストを避けるため Open-Meteo に変更
 
 ### AI：Google Gemini 2.5 Flash
 - 無料枠：10RPM、250リクエスト/日（クレジットカード不要）
@@ -47,7 +51,7 @@
 ## 不採用にした案
 
 ### 天気API: WeatherAPI.com
-- 無料枠は十分だが、OpenWeatherMapの方がドキュメントが充実
+- 無料枠は十分だが、メアド登録が必要。登録すら不要な Open-Meteo を優先した
 
 ### AI: OpenAI GPT
 - 無料クレジットが限定的で、継続利用には課金が必要
