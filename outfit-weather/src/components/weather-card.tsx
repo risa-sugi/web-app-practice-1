@@ -29,7 +29,10 @@ export function WeatherCard({ defaultRegion }: WeatherCardProps) {
 
     async function load() {
       try {
-        const url = `/api/weather?region=${encodeURIComponent(defaultRegion)}`;
+        const coords = await tryGeolocation();
+        const url = coords
+          ? `/api/weather?lat=${coords.lat}&lon=${coords.lon}`
+          : `/api/weather?region=${encodeURIComponent(defaultRegion)}`;
         const res = await fetch(url, { signal: controller.signal });
         const body = await res.json();
         if (!res.ok) {
@@ -149,4 +152,19 @@ function WeatherIcon({
 
 function formatPop(pop: number) {
   return `${Math.round(pop * 100)}%`;
+}
+
+function tryGeolocation(): Promise<{ lat: number; lon: number } | null> {
+  return new Promise((resolve) => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) =>
+        resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+      () => resolve(null),
+      { timeout: 5000, maximumAge: 600_000 }
+    );
+  });
 }
